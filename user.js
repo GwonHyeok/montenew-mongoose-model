@@ -22,8 +22,7 @@ const UserSchema = new Schema({
     type: String,
     required: false,
     enum: ['SuperAdmin', 'Admin', 'User'],
-    default: 'User',
-    access: 'private'
+    default: 'User'
   },
   company: { type: mongoose.Schema.Types.ObjectId, ref: 'Company' }
 });
