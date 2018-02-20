@@ -18,7 +18,10 @@ const AttachmentSchema = new Schema(
     metadata: Object,
     location: String,
     etag: String
+  },
+  {
+    timestamps: true
   }
 );
 
-module.exports = mongoose.model('Attachment', AttachmentSchema, { timestamps: true });
+module.exports = mongoose.model('Attachment', AttachmentSchema);

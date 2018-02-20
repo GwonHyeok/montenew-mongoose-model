@@ -3,29 +3,30 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 
 const UserSchema = new Schema({
-  username: {
-    type: String,
-    required: [true, '아이디가 설정되어 있지 않습니다'],
-    match: /\S+@\S+\.\S+/,
-    unique: true
+    username: {
+      type: String,
+      required: [true, '아이디가 설정되어 있지 않습니다'],
+      match: /\S+@\S+\.\S+/,
+      unique: true
+    },
+    password: {
+      type: String,
+      required: [true, '비밀번호가 설정되어 있지 않습니다'],
+      // minlength: [6, '6자리 이상이어야 합니다'],
+      // maxlength: [12, '12자리 이하여야 합니다']
+    },
+    name: { type: String, required: [true, '이름이 설정되어 있지 않습니다'] },
+    status: { type: String, required: false },
+    contact: { type: String, required: [true, '연락처가 없습니다'] },
+    authority: {
+      type: String,
+      required: false,
+      enum: ['SuperAdmin', 'Admin', 'User'],
+      default: 'User'
+    },
+    company: { type: mongoose.Schema.Types.ObjectId, ref: 'Company' }
   },
-  password: {
-    type: String,
-    required: [true, '비밀번호가 설정되어 있지 않습니다'],
-    // minlength: [6, '6자리 이상이어야 합니다'],
-    // maxlength: [12, '12자리 이하여야 합니다']
-  },
-  name: { type: String, required: [true, '이름이 설정되어 있지 않습니다'] },
-  status: { type: String, required: false },
-  contact: { type: String, required: [true, '연락처가 없습니다'] },
-  authority: {
-    type: String,
-    required: false,
-    enum: ['SuperAdmin', 'Admin', 'User'],
-    default: 'User'
-  },
-  company: { type: mongoose.Schema.Types.ObjectId, ref: 'Company' }
-});
+  { timestamps: true });
 
 UserSchema.virtual('isAdmin').get(function() {
   return this.authority === 'Admin' || this.authority === 'SuperAdmin';
@@ -55,4 +56,4 @@ UserSchema.methods.isValidPassword = function(password) {
   }
 };
 
-module.exports = mongoose.model('User', UserSchema, { timestamps: true });
+module.exports = mongoose.model('User', UserSchema);
